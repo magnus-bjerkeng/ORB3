@@ -1,0 +1,90 @@
+%YAML:1.0
+
+#--------------------------------------------------------------------------------------------
+# AGZ Zurich MAV Dataset - Camera Parameters
+# Extracted from calibration_data.npz
+#--------------------------------------------------------------------------------------------
+File.version: "1.0"
+
+Camera.type: "PinHole"
+
+# Camera calibration parameters from intrinsic_matrix and distCoeff
+# Intrinsic matrix: [[893.39, 0, 951.13], [0, 898.32, 555.13], [0, 0, 1]]
+# Distortion coefficients: [[-0.2805, 0.1158, -0.0009, 0.0001, -0.0270]]
+Camera1.fx: 893.39010814
+Camera1.fy: 898.32648616
+Camera1.cx: 951.1310043
+Camera1.cy: 555.13350077
+
+# Distortion coefficients (k1, k2, p1, p2, k3)
+Camera1.k1: -0.28052513
+Camera1.k2: 0.11580641
+Camera1.p1: -0.00098433
+Camera1.p2: 0.00015847
+Camera1.k3: -0.02702150
+
+# Camera resolution (estimated from principal point - needs verification)
+# cx=951, cy=555 suggests image width ~1900, height ~1100
+Camera.width: 1920
+Camera.height: 1080
+
+# Resized for processing efficiency
+Camera.newWidth: 960
+Camera.newHeight: 540
+
+# Camera frames per second (estimated from MAV data)
+Camera.fps: 30
+
+# Color order (1: RGB for most MAV datasets)
+Camera.RGB: 1
+
+# Transformation from camera to body-frame (IMU)
+# This needs to be calibrated for the specific MAV setup
+# Using approximate transformation - will need refinement
+IMU.T_b_c1: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: f
+   data: [1.0, 0.0, 0.0, 0.0,
+          0.0, 1.0, 0.0, 0.0,
+          0.0, 0.0, 1.0, 0.0,
+          0.0, 0.0, 0.0, 1.0]
+
+# IMU noise parameters (estimated for MAV platform)
+# These may need tuning based on AGZ dataset performance
+IMU.NoiseGyro: 1.0e-3
+IMU.NoiseAcc: 1.0e-2
+IMU.GyroWalk: 1.0e-4
+IMU.AccWalk: 1.0e-3
+IMU.Frequency: 100.0
+
+#--------------------------------------------------------------------------------------------
+# ORB Parameters - Tuned for Urban MAV Environment
+#--------------------------------------------------------------------------------------------
+
+# More features for complex urban scenes
+ORBextractor.nFeatures: 1500
+
+# Standard scale factor
+ORBextractor.scaleFactor: 1.2
+
+# More levels for varied building/ground scales
+ORBextractor.nLevels: 8
+
+# FAST threshold tuned for outdoor lighting
+ORBextractor.iniThFAST: 20
+ORBextractor.minThFAST: 7
+
+#--------------------------------------------------------------------------------------------
+# Viewer Parameters
+#--------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize: 0.1
+Viewer.KeyFrameLineWidth: 1.0
+Viewer.GraphLineWidth: 0.9
+Viewer.PointSize: 2.0
+Viewer.CameraSize: 0.15
+Viewer.CameraLineWidth: 3.0
+Viewer.ViewpointX: 0.0
+Viewer.ViewpointY: -0.7
+Viewer.ViewpointZ: -5.0
+Viewer.ViewpointF: 500.0
