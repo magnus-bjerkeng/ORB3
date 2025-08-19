@@ -76,15 +76,15 @@ ORBextractor.iniThFAST: 20
 ORBextractor.minThFAST: 7
 
 #--------------------------------------------------------------------------------------------
-# Viewer Parameters
+# Viewer Parameters - Optimized for Drone Trajectory Visualization
 #--------------------------------------------------------------------------------------------
-Viewer.KeyFrameSize: 0.1
-Viewer.KeyFrameLineWidth: 1.0
-Viewer.GraphLineWidth: 0.9
-Viewer.PointSize: 2.0
-Viewer.CameraSize: 0.15
-Viewer.CameraLineWidth: 3.0
+Viewer.KeyFrameSize: 0.2
+Viewer.KeyFrameLineWidth: 2.0
+Viewer.GraphLineWidth: 1.5
+Viewer.PointSize: 3.0
+Viewer.CameraSize: 0.3
+Viewer.CameraLineWidth: 4.0
 Viewer.ViewpointX: 0.0
-Viewer.ViewpointY: -0.7
-Viewer.ViewpointZ: -5.0
-Viewer.ViewpointF: 500.0
+Viewer.ViewpointY: -1.0
+Viewer.ViewpointZ: -8.0
+Viewer.ViewpointF: 400.0

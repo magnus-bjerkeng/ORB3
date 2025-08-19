@@ -230,6 +230,11 @@ add_executable(mono_inertial_agz
         Examples/Monocular-Inertial/mono_inertial_agz.cc)
 target_link_libraries(mono_inertial_agz ${PROJECT_NAME})
 
+# AGZ Monocular SLAM example
+add_executable(mono_agz
+        Examples/Monocular/mono_agz.cc)
+target_link_libraries(mono_agz ${PROJECT_NAME})
+
 if(realsense2_FOUND)
     add_executable(mono_inertial_realsense_t265
             Examples/Monocular-Inertial/mono_inertial_realsense_t265.cc)

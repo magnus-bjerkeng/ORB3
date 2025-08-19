@@ -1,0 +1,66 @@
+%YAML:1.0
+
+#--------------------------------------------------------------------------------------------
+# AGZ Zurich MAV Dataset - Monocular SLAM Configuration  
+#--------------------------------------------------------------------------------------------
+File.version: "1.0"
+
+Camera.type: "PinHole"
+
+# Camera calibration parameters
+Camera1.fx: 893.39010814
+Camera1.fy: 898.32648616
+Camera1.cx: 951.1310043
+Camera1.cy: 555.13350077
+
+# Distortion coefficients (k1, k2, p1, p2, k3)
+Camera1.k1: -0.28052513
+Camera1.k2: 0.11580641
+Camera1.p1: -0.00098433
+Camera1.p2: 0.00015847
+Camera1.k3: -0.02702150
+
+# Camera resolution
+Camera.width: 1920
+Camera.height: 1080
+
+# Resized for processing efficiency
+Camera.newWidth: 960
+Camera.newHeight: 540
+
+# Camera frames per second
+Camera.fps: 30
+
+# Color order (1: RGB)
+Camera.RGB: 1
+
+#--------------------------------------------------------------------------------------------
+# ORB Parameters - Optimized for Urban MAV Environment
+#--------------------------------------------------------------------------------------------
+
+# More features for complex urban scenes
+ORBextractor.nFeatures: 2000
+
+# Standard scale factor
+ORBextractor.scaleFactor: 1.2
+
+# More levels for varied scales
+ORBextractor.nLevels: 8
+
+# FAST threshold tuned for outdoor lighting
+ORBextractor.iniThFAST: 20
+ORBextractor.minThFAST: 7
+
+#--------------------------------------------------------------------------------------------
+# Viewer Parameters - Optimized for Drone Trajectory Visualization
+#--------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize: 0.3
+Viewer.KeyFrameLineWidth: 3.0
+Viewer.GraphLineWidth: 2.0
+Viewer.PointSize: 4.0
+Viewer.CameraSize: 0.4
+Viewer.CameraLineWidth: 5.0
+Viewer.ViewpointX: 0.0
+Viewer.ViewpointY: -1.2
+Viewer.ViewpointZ: -10.0
+Viewer.ViewpointF: 300.0
