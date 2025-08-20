@@ -21,6 +21,9 @@
 #include "KeyFrame.h"
 #include <pangolin/pangolin.h>
 #include <mutex>
+#include <fstream>
+#include <dirent.h>
+#include <sys/stat.h>
 
 namespace ORB_SLAM3
 {
@@ -395,6 +398,68 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
     }
 }
 
+// CLIP Integration: Read current similarity and determine drone color
+void MapDrawer::GetCLIPDroneColor(float &r, float &g, float &b) {
+    // Default green drone color
+    r = 0.0f; g = 1.0f; b = 0.0f;
+    
+    // Try to read latest CLIP result using standard C++ (no filesystem)
+    std::string results_dir = "./clip_shared/results";
+    
+    // Check if results directory exists
+    struct stat st;
+    if (stat(results_dir.c_str(), &st) != 0 || !S_ISDIR(st.st_mode)) {
+        return; // Directory doesn't exist
+    }
+    
+    try {
+        // Open directory and find most recent .json file
+        DIR* dir = opendir(results_dir.c_str());
+        if (dir == NULL) return;
+        
+        struct dirent* entry;
+        std::string latest_result;
+        time_t latest_time = 0;
+        
+        while ((entry = readdir(dir)) != NULL) {
+            std::string filename = entry->d_name;
+            if (filename.length() > 5 && filename.substr(filename.length() - 5) == ".json") {
+                std::string full_path = results_dir + "/" + filename;
+                struct stat file_stat;
+                if (stat(full_path.c_str(), &file_stat) == 0 && file_stat.st_mtime > latest_time) {
+                    latest_time = file_stat.st_mtime;
+                    latest_result = full_path;
+                }
+            }
+        }
+        closedir(dir);
+        
+        if (!latest_result.empty()) {
+            std::ifstream result_file(latest_result.c_str());
+            if (result_file.is_open()) {
+                std::string line;
+                while (std::getline(result_file, line)) {
+                    if (line.find("\"color_code\":") != std::string::npos) {
+                        if (line.find("\"red\"") != std::string::npos) {
+                            r = 1.0f; g = 0.0f; b = 0.0f; // Red - high similarity
+                        } else if (line.find("\"orange\"") != std::string::npos) {
+                            r = 1.0f; g = 0.5f; b = 0.0f; // Orange - medium similarity
+                        } else if (line.find("\"yellow\"") != std::string::npos) {
+                            r = 1.0f; g = 1.0f; b = 0.0f; // Yellow - low similarity
+                        } else {
+                            r = 0.0f; g = 1.0f; b = 0.0f; // Green - no/very low similarity
+                        }
+                        break;
+                    }
+                }
+                result_file.close();
+            }
+        }
+    } catch (...) {
+        // Fall back to default green if any error occurs
+    }
+}
+
 void MapDrawer::DrawCurrentCamera(pangolin::OpenGlMatrix &Twc)
 {
     const float &w = mCameraSize;
@@ -410,7 +475,11 @@ void MapDrawer::DrawCurrentCamera(pangolin::OpenGlMatrix &Twc)
 #endif
 
     glLineWidth(mCameraLineWidth);
-    glColor3f(0.0f,1.0f,0.0f);
+    
+    // CLIP Integration: Dynamic drone color based on semantic analysis
+    float r, g, b;
+    GetCLIPDroneColor(r, g, b);
+    glColor3f(r, g, b);
     glBegin(GL_LINES);
     glVertex3f(0,0,0);
     glVertex3f(w,h,z);

@@ -49,6 +49,9 @@ public:
     void SetCurrentCameraPose(const Sophus::SE3f &Tcw);
     void SetReferenceKeyFrame(KeyFrame *pKF);
     void GetCurrentOpenGLCameraMatrix(pangolin::OpenGlMatrix &M, pangolin::OpenGlMatrix &MOw);
+    
+    // CLIP Integration: Get drone color based on semantic analysis
+    void GetCLIPDroneColor(float &r, float &g, float &b);
 
 private:
 
