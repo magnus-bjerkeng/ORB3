@@ -235,6 +235,11 @@ add_executable(mono_agz
         Examples/Monocular/mono_agz.cc)
 target_link_libraries(mono_agz ${PROJECT_NAME})
 
+# AGZ CLIP-Enhanced Monocular SLAM example
+add_executable(mono_agz_clip
+        Examples/Monocular/mono_agz_clip.cc)
+target_link_libraries(mono_agz_clip ${PROJECT_NAME})
+
 if(realsense2_FOUND)
     add_executable(mono_inertial_realsense_t265
             Examples/Monocular-Inertial/mono_inertial_realsense_t265.cc)

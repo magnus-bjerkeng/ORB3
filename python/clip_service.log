@@ -1,0 +1,41 @@
+2025-08-19 15:20:23,187 - CLIP Service - INFO - Loading CLIP model ViT-B/32 on cpu...
+2025-08-19 15:20:27,092 - CLIP Service - INFO - ✅ CLIP model loaded in 3.90s
+2025-08-19 15:20:27,092 - CLIP Service - INFO - Updating text query to: 'red car'
+2025-08-19 15:20:27,278 - CLIP Service - INFO - Text embedding computed in 0.185s
+2025-08-19 15:20:38,711 - CLIP Service - INFO - Loading CLIP model ViT-B/32 on cpu...
+2025-08-19 15:20:42,793 - CLIP Service - INFO - ✅ CLIP model loaded in 4.08s
+2025-08-19 15:20:42,793 - CLIP Service - INFO - Updating text query to: 'red car'
+2025-08-19 15:20:42,975 - CLIP Service - INFO - Text embedding computed in 0.182s
+2025-08-19 15:20:42,975 - CLIP Service - INFO - 🚀 CLIP Service Interactive Mode Started
+2025-08-19 15:20:42,975 - CLIP Service - INFO - Commands: 'query <text>', 'test <image_path>', 'stats', 'quit'
+2025-08-19 15:20:42,975 - CLIP Service - INFO - Loading CLIP model ViT-B/32 on cpu...
+2025-08-19 15:20:46,891 - CLIP Service - INFO - ✅ CLIP model loaded in 3.92s
+2025-08-19 15:20:47,223 - CLIP Service - INFO - Image: 00005.jpg
+2025-08-19 15:20:47,224 - CLIP Service - INFO - Similarity: 0.1999
+2025-08-19 15:20:47,224 - CLIP Service - INFO - Color: orange
+2025-08-19 15:20:47,224 - CLIP Service - INFO - Time: 0.285s
+2025-08-19 15:20:47,224 - CLIP Service - INFO - Updating text query to: 'blue sky'
+2025-08-19 15:20:47,422 - CLIP Service - INFO - Text embedding computed in 0.198s
+2025-08-19 15:20:47,730 - CLIP Service - INFO - Image: 00005.jpg
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Similarity: 0.1754
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Color: orange
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Time: 0.258s
+2025-08-19 15:20:47,731 - CLIP Service - INFO - ==================================================
+2025-08-19 15:20:47,731 - CLIP Service - INFO - 📊 CLIP SERVICE PERFORMANCE
+2025-08-19 15:20:47,731 - CLIP Service - INFO - ==================================================
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Frames processed: 2
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Runtime: 9.0s
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Average inference: 0.271s
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Estimated FPS: 3.7
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Current query: 'blue sky'
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Device: cpu
+2025-08-19 15:20:47,731 - CLIP Service - INFO - ==================================================
+2025-08-19 15:20:47,731 - CLIP Service - INFO - 📊 CLIP SERVICE PERFORMANCE
+2025-08-19 15:20:47,731 - CLIP Service - INFO - ==================================================
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Frames processed: 2
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Runtime: 9.0s
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Average inference: 0.271s
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Estimated FPS: 3.7
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Current query: 'blue sky'
+2025-08-19 15:20:47,731 - CLIP Service - INFO - Device: cpu
+2025-08-19 15:20:47,731 - CLIP Service - INFO - CLIP Service stopped.

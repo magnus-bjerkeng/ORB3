@@ -186,6 +186,11 @@ public:
 
     float GetImageScale();
 
+    // CLIP-enhanced visualization methods (thread-safe)
+    void EnableCLIPDisplay(const string& query);
+    void SetCLIPDisplayData(const cv::Mat& image, const string& query, int frame_num, int total_frames);
+    void SetCLIPResult(float similarity, const string& color_code, const string& query);
+
 #ifdef REGISTER_TIMES
     void InsertRectTime(double& time);
     void InsertResizeTime(double& time);
@@ -193,6 +198,8 @@ public:
 #endif
 
 private:
+    // Allow Viewer to access CLIP data safely
+    friend class Viewer;
 
     void SaveAtlas(int type);
     bool LoadAtlas(int type);
@@ -262,6 +269,21 @@ private:
     string mStrVocabularyFilePath;
 
     Settings* settings_;
+
+    // CLIP display data (thread-safe communication between main and viewer threads)
+    struct CLIPDisplayData {
+        cv::Mat currentImage;
+        string query;
+        int frameNumber;
+        int totalFrames;
+        float similarity;
+        string colorCode;
+        bool hasNewImage;
+        bool hasNewResult;
+        bool enabled;
+    };
+    CLIPDisplayData mCLIPData;
+    std::mutex mMutexCLIP;
 };
 
 }// namespace ORB_SLAM

@@ -68,6 +68,9 @@ private:
 
     bool ParseViewerParamFile(cv::FileStorage &fSettings);
 
+    // CLIP display handling (thread-safe)
+    void DrawCLIPDisplay();
+
     bool Stop();
 
     System* mpSystem;

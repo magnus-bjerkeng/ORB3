@@ -1545,5 +1545,41 @@ string System::CalculateCheckSum(string filename, int type)
     return checksum;
 }
 
+// CLIP-enhanced visualization methods (thread-safe)
+void System::EnableCLIPDisplay(const string& query)
+{
+    unique_lock<mutex> lock(mMutexCLIP);
+    mCLIPData.enabled = true;
+    mCLIPData.query = query;
+    mCLIPData.hasNewImage = false;
+    mCLIPData.hasNewResult = false;
+    mCLIPData.frameNumber = 0;
+    mCLIPData.totalFrames = 0;
+    mCLIPData.similarity = 0.0f;
+    mCLIPData.colorCode = "green";
+}
+
+void System::SetCLIPDisplayData(const cv::Mat& image, const string& query, int frame_num, int total_frames)
+{
+    unique_lock<mutex> lock(mMutexCLIP);
+    if (mCLIPData.enabled) {
+        image.copyTo(mCLIPData.currentImage);
+        mCLIPData.query = query;
+        mCLIPData.frameNumber = frame_num;
+        mCLIPData.totalFrames = total_frames;
+        mCLIPData.hasNewImage = true;
+    }
+}
+
+void System::SetCLIPResult(float similarity, const string& color_code, const string& query)
+{
+    unique_lock<mutex> lock(mMutexCLIP);
+    if (mCLIPData.enabled) {
+        mCLIPData.similarity = similarity;
+        mCLIPData.colorCode = color_code;
+        mCLIPData.hasNewResult = true;
+    }
+}
+
 } //namespace ORB_SLAM
 

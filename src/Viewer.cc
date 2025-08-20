@@ -336,6 +336,10 @@ void Viewer::Run()
         }
 
         cv::imshow("ORB-SLAM3: Current Frame",toShow);
+        
+        // Handle CLIP display in the same thread to avoid OpenCV threading conflicts
+        DrawCLIPDisplay();
+        
         cv::waitKey(mT);
 
         if(menuReset)
@@ -448,5 +452,72 @@ void Viewer::Release()
 {
     mbStopTrack = true;
 }*/
+
+void Viewer::DrawCLIPDisplay()
+{
+    // Thread-safe access to CLIP data from System
+    unique_lock<mutex> lock(mpSystem->mMutexCLIP);
+    
+    if (!mpSystem->mCLIPData.enabled) {
+        return;
+    }
+    
+    static bool clip_window_initialized = false;
+    
+    // Initialize CLIP window once (in the correct thread)
+    if (!clip_window_initialized) {
+        try {
+            cv::namedWindow("CLIP Analysis - Clean RGB", cv::WINDOW_AUTOSIZE | cv::WINDOW_KEEPRATIO);
+            cv::moveWindow("CLIP Analysis - Clean RGB", 100, 100);
+            clip_window_initialized = true;
+        } catch(const cv::Exception& e) {
+            // Window initialization failed, disable CLIP display
+            mpSystem->mCLIPData.enabled = false;
+            return;
+        }
+    }
+    
+    // Display CLIP image if we have new data
+    if (mpSystem->mCLIPData.hasNewImage && !mpSystem->mCLIPData.currentImage.empty()) {
+        cv::Mat rgb_display = mpSystem->mCLIPData.currentImage.clone();
+        
+        // Add CLIP query overlay
+        string status_text = "CLIP Query: " + mpSystem->mCLIPData.query;
+        cv::putText(rgb_display, status_text, cv::Point(30, 30), 
+                   cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(255, 255, 255), 2);
+        
+        // Add frame counter
+        string frame_text = "Frame: " + to_string(mpSystem->mCLIPData.frameNumber) + "/" + 
+                           to_string(mpSystem->mCLIPData.totalFrames);
+        cv::putText(rgb_display, frame_text, cv::Point(30, 60), 
+                   cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(255, 255, 255), 2);
+        
+        // Add CLIP results if available
+        if (mpSystem->mCLIPData.hasNewResult) {
+            string result_text = "CLIP: " + to_string(mpSystem->mCLIPData.similarity).substr(0, 5) + 
+                                " (" + mpSystem->mCLIPData.colorCode + ")";
+            cv::Scalar color;
+            if(mpSystem->mCLIPData.colorCode == "red") color = cv::Scalar(0, 0, 255);
+            else if(mpSystem->mCLIPData.colorCode == "orange") color = cv::Scalar(0, 165, 255);
+            else if(mpSystem->mCLIPData.colorCode == "yellow") color = cv::Scalar(0, 255, 255);
+            else color = cv::Scalar(0, 255, 0);
+            
+            cv::putText(rgb_display, result_text, cv::Point(30, 90), 
+                       cv::FONT_HERSHEY_SIMPLEX, 0.8, color, 3);
+            
+            mpSystem->mCLIPData.hasNewResult = false; // Mark as displayed
+        }
+        
+        // Display the image (all OpenCV calls now in single thread - no more conflicts!)
+        try {
+            cv::imshow("CLIP Analysis - Clean RGB", rgb_display);
+        } catch(const cv::Exception& e) {
+            // Display error occurred, disable CLIP display to prevent further issues
+            mpSystem->mCLIPData.enabled = false;
+        }
+        
+        mpSystem->mCLIPData.hasNewImage = false; // Mark as displayed
+    }
+}
 
 }
